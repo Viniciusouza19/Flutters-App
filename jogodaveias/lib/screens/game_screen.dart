@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:jogodaveias/screens/home_screen.dart';
 
 class GameScreen extends StatefulWidget {
-  const GameScreen({Key? key}) : super(key: key);
+  GameScreen({Key? key, required this.jog1, required this.jog2})
+      : super(key: key);
+  late String jog1;
+  late String jog2;
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -27,30 +31,29 @@ class _GameScreenState extends State<GameScreen> {
         title: Center(
           child: RichText(
             text: TextSpan(
-              text: 'X: ',
+              text: '${widget.jog1}:   ',
               style: TextStyle(color: Colors.red[200], fontSize: 30),
               children: <TextSpan>[
                 TextSpan(
-                  text: x.toString(),
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  text: '$x',
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 const TextSpan(
                   text: ' vs ',
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
                 TextSpan(
-                  text: 'O: ',
-                  style: TextStyle(color: Colors.green[200]),
+                  text: '$o',
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 TextSpan(
-                  text: o.toString(),
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  text: '   :${widget.jog2}',
+                  style: TextStyle(color: Colors.green[200]),
                 ),
               ],
             ),
           ),
         ),
-
       ),
       body: Center(
         child: Column(
@@ -58,17 +61,12 @@ class _GameScreenState extends State<GameScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
-            const Text(
-              'Jogador da vez',
-              style: TextStyle(
-                fontSize: 40,
-              ),
-            ),
             Text(
-              '$jogadorAtual',
+              'Jogador Atual: \n$jogadorAtual',
               style: const TextStyle(fontSize: 30),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 60),
             Expanded(
               child: GridView.count(
                 crossAxisSpacing: 2,
@@ -76,7 +74,7 @@ class _GameScreenState extends State<GameScreen> {
                 crossAxisCount: 3,
                 addAutomaticKeepAlives: true,
                 shrinkWrap: true,
-                padding: EdgeInsets.only(left: 10, right: 10),
+                padding: const EdgeInsets.only(left: 10, right: 10),
                 children: [
                   for (int x = 0; x < campos.length; x++)
                     for (int y = 0; y < campos[0].length; y++)
@@ -85,18 +83,22 @@ class _GameScreenState extends State<GameScreen> {
                           backgroundColor: campos[x][y] == 'X'
                               ? Colors.red[200]
                               : campos[x][y] == 'O'
-                                  ? Colors.blue[200]
-                                  : Colors.green[900],
+                                  ? Colors.green[200]
+                                  : Colors.white,
                         ),
                         onPressed: () {
                           setState(() {
                             if (campos[x][y] == '') {
-                              campos[x][y] = jogador == 0 ? jogada[0] : jogada[1];
+                              campos[x][y] =
+                                  jogador == 0 ? jogada[0] : jogada[1];
                               checkForWinner(jogadorAtual) == true
                                   ? alertGame('O jogador: $jogadorAtual venceu')
-                                  : count == 8 ? alertGame('Empate!!'): null;
+                                  : count == 8
+                                      ? alertGame('Empate!!')
+                                      : null;
                               jogador == 1 ? jogador = 0 : jogador = 1;
-                              jogadorAtual = jogador == 0 ? jogada[0] : jogada[1];
+                              jogadorAtual =
+                                  jogador == 0 ? jogada[0] : jogada[1];
 
                               count++;
                             }
@@ -118,19 +120,22 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 
-  bool winnerTre(int x, int o,){
-    if(o == 3) {
+  bool winnerTre(
+    int x,
+    int o,
+  ) {
+    if (o == 3) {
       return true;
-
     }
-    if(x == 3) {
+    if (x == 3) {
       return true;
     }
     return false;
   }
+
   void gameClear() {
     jogadorAtual = 'X';
-    if(winnerTre(x, o)){
+    if (winnerTre(x, o)) {
       for (int x = 0; x < campos.length; x++) {
         for (int y = 0; y < campos[0].length; y++) {
           campos[x][y] = '';
@@ -140,7 +145,7 @@ class _GameScreenState extends State<GameScreen> {
       o = 0;
       count = 0;
       jogadorAtual = 'X';
-    }else {
+    } else {
       for (int x = 0; x < campos.length; x++) {
         for (int y = 0; y < campos[0].length; y++) {
           campos[x][y] = '';
@@ -149,7 +154,6 @@ class _GameScreenState extends State<GameScreen> {
       jogadorAtual = 'X';
       count = 0;
     }
-
   }
 
   void alertGame(String jogadorA) {
@@ -209,7 +213,6 @@ class _GameScreenState extends State<GameScreen> {
       if (colunaCompleta) {
         setState(() {
           jogada == 'X' ? x++ : o++;
-
         });
 
         return true;
@@ -225,7 +228,6 @@ class _GameScreenState extends State<GameScreen> {
     if (diagonalPrincipalCompleta) {
       setState(() {
         jogada == 'X' ? x++ : o++;
-
       });
 
       return true;
@@ -241,7 +243,6 @@ class _GameScreenState extends State<GameScreen> {
     if (diagonalSecundariaCompleta) {
       setState(() {
         jogada == 'X' ? x++ : o++;
-
       });
 
       return true;

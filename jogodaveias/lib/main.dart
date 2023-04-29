@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jogodaveias/screens/game_screen.dart';
 
+import 'screens/home_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -10,15 +12,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.lightBlue[800],
-        fontFamily: 'Georgia',
-
-      ),
-      home: const GameScreen(),
-    );
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          brightness: Brightness.dark,
+          primaryColor: Colors.green,
+        ),
+        initialRoute: '/home_page',
+        routes: {
+          '/home_page': (context) => HomeScreen(),
+        });
   }
 }
